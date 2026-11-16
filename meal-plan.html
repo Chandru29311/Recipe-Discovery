@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Meal Plan | Stackly Discovery</title>
+  <meta name="description" content="View, organize, and manage your weekly meal plan. Persisted safely with LocalStorage.">
+
+  <!-- Google Fonts: Playfair Display (Serif) & Plus Jakarta Sans (Sans-serif) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/webp" href="assets/images/chan.webp">
+</head>
+<body data-page="meal-plan">
+
+  <!-- =========================================================================
+       Preloader Animation
+       ========================================================================= -->
+  <div id="preloader" aria-live="polite" aria-label="Loading Stackly">
+    <div class="preloader-content">
+      <div class="preloader-logo-wrap">
+        <img src="assets/images/chan.webp" alt="Stackly Logo" class="preloader-logo-img">
+      </div>
+      <div class="preloader-bar-wrap">
+        <div class="preloader-bar"></div>
+      </div>
+      <div class="preloader-tagline">Artisan Recipes • Wholesome Planning • Everyday Joy</div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       1. Header & Navigation Bar
+       ========================================================================= -->
+  <header class="site-header" id="siteHeader">
+    <div class="container nav-container">
+      
+      <!-- Brand Logo -->
+      <a href="index.html" class="brand-logo" aria-label="Stackly Home">
+        <img src="assets/images/chan.webp" alt="Stackly Logo" class="brand-logo-img">
+      </a>
+
+      <!-- Primary Navigation Links -->
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-links" id="navLinks">
+          <li>
+            <a href="index.html" class="nav-link">
+              <i class="fa-solid fa-house"></i>
+              <span>Home</span>
+            </a>
+          </li>
+          <li>
+            <a href="explore.html" class="nav-link">
+              <i class="fa-solid fa-utensils"></i>
+              <span>Explore Recipes</span>
+            </a>
+          </li>
+          <li>
+            <a href="meal-plan.html" class="nav-link active">
+              <i class="fa-solid fa-calendar-days"></i>
+              <span>My Meal Plan</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Nav Action Items: Favorites & Meal Plan Badges -->
+      <div class="nav-actions">
+        <!-- Favorites Shortcut Button with Badge -->
+        <button class="nav-action-btn" id="wishlistTriggerBtn" title="Saved Favorites" aria-label="View Favorites">
+          <i class="fa-solid fa-heart" style="color: var(--coral);"></i>
+          <span class="nav-count-badge" id="wishlistCountBadge" style="display:none;">0</span>
+        </button>
+
+        <!-- Mobile Hamburger Menu Button -->
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       PAGE 3: MY MEAL PLAN CONTENT
+       ========================================================================= -->
+  <main>
+    <div class="container">
+      
+      <!-- Page Section Header -->
+      <div class="section-header" style="margin-top: 2.25rem;">
+        <div>
+          <h1 class="section-title">My <span>Meal Plan</span></h1>
+          <p class="section-subtitle">Manage, curate, and review your planned dishes saved securely with LocalStorage.</p>
+        </div>
+        <a href="explore.html" class="btn btn-outline btn-sm">
+          <i class="fa-solid fa-plus"></i> Add More Recipes
+        </a>
+      </div>
+
+      <!-- Meal Plan Summary Stat Cards -->
+      <div class="meal-plan-stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-icon orange">
+            <i class="fa-solid fa-utensils"></i>
+          </div>
+          <div class="stat-card-info">
+            <span>Planned Meals</span>
+            <h4 id="statTotalMeals">0</h4>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-icon green">
+            <i class="fa-regular fa-clock"></i>
+          </div>
+          <div class="stat-card-info">
+            <span>Total Cooking Time</span>
+            <h4 id="statTotalCookTime">0 mins</h4>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-card-icon gold">
+            <i class="fa-solid fa-fire"></i>
+          </div>
+          <div class="stat-card-info">
+            <span>Estimated Energy</span>
+            <h4 id="statTotalCalories">0 kcal</h4>
+          </div>
+        </div>
+      </div>
+
+      <!-- Meal Plan Actions Bar -->
+      <div class="meal-plan-actions-bar" id="mealPlanActionsBar">
+        <div class="meal-plan-notice">
+          <i class="fa-solid fa-shield-halved" style="color: var(--secondary);"></i> Selections are automatically saved in LocalStorage
+        </div>
+        <div class="meal-plan-btns-group">
+          <button class="btn btn-danger-outline btn-sm" id="clearMealPlanBtn">
+            <i class="fa-solid fa-trash-can"></i> Clear All Plan
+          </button>
+          <a href="explore.html" class="btn btn-primary btn-sm">
+            <i class="fa-solid fa-plus"></i> Add More Recipes
+          </a>
+        </div>
+      </div>
+
+      <!-- Dynamic Meal Plan List -->
+      <div class="meal-plan-list" id="mealPlanList">
+        <!-- Dynamically populated via Array map() in app.js -->
+      </div>
+
+      <!-- Empty State for Meal Plan -->
+      <div class="empty-state" id="mealPlanEmptyState" style="display: none;">
+        <div class="empty-state-icon">
+          <i class="fa-solid fa-calendar-xmark"></i>
+        </div>
+        <h3>Your Meal Plan is Currently Empty</h3>
+        <p>You haven't added any recipes to your meal plan yet. Browse through our recipe catalog and click "+ Add to Plan" on any dish you'd love to cook!</p>
+        <a href="explore.html" class="btn btn-primary">
+          <i class="fa-solid fa-compass"></i> Explore Recipes
+        </a>
+      </div>
+
+      <!-- Section 1: Weekly Batch Prep Strategy -->
+      <section class="batch-prep-section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Weekly <span>Batch Prep Guide</span></h2>
+            <p class="section-subtitle">Maximize kitchen efficiency, minimize food waste, and enjoy home-cooked meals every day.</p>
+          </div>
+        </div>
+
+        <div class="batch-prep-grid">
+          <div class="prep-card">
+            <span class="prep-step-badge">01</span>
+            <h3>Sunday Foundation Prep</h3>
+            <p>Wash and spin dry delicate greens, roast hearty root vegetables, cook whole grains in bulk, and portion marinades in airtight glass storage jars.</p>
+          </div>
+
+          <div class="prep-card">
+            <span class="prep-step-badge">02</span>
+            <h3>Midweek Fast Assemblies</h3>
+            <p>Combine your pre-cooked proteins with fresh skillet sides or tossed greens for quick 15-minute wholesome gourmet dinners without starting from scratch.</p>
+          </div>
+
+          <div class="prep-card">
+            <span class="prep-step-badge">03</span>
+            <h3>Zero-Waste Reinvention</h3>
+            <p>Transform leftover roasted vegetables into velvety weeknight soups, rustic frittatas, or toasted panini before stocking up for the next cycle.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Smart Nutrition & Macro Target Goals -->
+      <section class="macro-balance-section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Smart Nutrition &amp; <span>Macro Goals</span></h2>
+            <p class="section-subtitle">Select your dietary focus to dynamically calibrate macro ratios and personalized chef guidance for your weekly meals.</p>
+          </div>
+        </div>
+
+        <div class="macro-dashboard-card">
+          <!-- Dietary Focus Filter Pills -->
+          <div class="macro-presets-bar" id="macroPresetPills" role="tablist" aria-label="Dietary Focus Presets">
+            <button class="macro-pill active" data-preset="balanced" type="button">
+              <i class="fa-solid fa-scale-balanced"></i> Balanced Gourmet
+            </button>
+            <button class="macro-pill" data-preset="high-protein" type="button">
+              <i class="fa-solid fa-dumbbell"></i> High Protein
+            </button>
+            <button class="macro-pill" data-preset="mediterranean" type="button">
+              <i class="fa-solid fa-lemon"></i> Mediterranean
+            </button>
+            <button class="macro-pill" data-preset="low-carb" type="button">
+              <i class="fa-solid fa-seedling"></i> Low Carb &amp; Clean
+            </button>
+            <button class="macro-pill" data-preset="plant-powered" type="button">
+              <i class="fa-solid fa-leaf"></i> Plant-Powered
+            </button>
+          </div>
+
+          <!-- Macro Metrics Grid -->
+          <div class="macro-metrics-grid">
+            <!-- Metric 1: Calories -->
+            <div class="macro-metric-card" id="cardCalories">
+              <div class="macro-metric-top">
+                <span class="macro-icon-bubble bubble-cal"><i class="fa-solid fa-fire-flame-curved"></i></span>
+                <span class="macro-tag tag-cal" id="tagCalories">Optimal Baseline</span>
+              </div>
+              <div class="macro-value-group">
+                <span class="macro-num" id="valCalories">2,150</span>
+                <span class="macro-unit">kcal / day</span>
+              </div>
+              <div class="macro-label">Daily Calorie Target</div>
+              <div class="macro-progress-track">
+                <div class="macro-progress-fill fill-cal" id="barCalories" style="width: 72%;"></div>
+              </div>
+              <span class="macro-subtext" id="subCalories">Target balance for standard active lifestyle</span>
+            </div>
+
+            <!-- Metric 2: Protein -->
+            <div class="macro-metric-card" id="cardProtein">
+              <div class="macro-metric-top">
+                <span class="macro-icon-bubble bubble-pro"><i class="fa-solid fa-drumstick-bite"></i></span>
+                <span class="macro-tag tag-pro" id="tagProtein">25% of energy</span>
+              </div>
+              <div class="macro-value-group">
+                <span class="macro-num" id="valProtein">135</span>
+                <span class="macro-unit">g / day</span>
+              </div>
+              <div class="macro-label">Lean Protein Target</div>
+              <div class="macro-progress-track">
+                <div class="macro-progress-fill fill-pro" id="barProtein" style="width: 65%;"></div>
+              </div>
+              <span class="macro-subtext" id="subProtein">Sustained muscle recovery &amp; metabolic fullness</span>
+            </div>
+
+            <!-- Metric 3: Carbs -->
+            <div class="macro-metric-card" id="cardCarbs">
+              <div class="macro-metric-top">
+                <span class="macro-icon-bubble bubble-carb"><i class="fa-solid fa-wheat-awn"></i></span>
+                <span class="macro-tag tag-carb" id="tagCarbs">45% of energy</span>
+              </div>
+              <div class="macro-value-group">
+                <span class="macro-num" id="valCarbs">240</span>
+                <span class="macro-unit">g / day</span>
+              </div>
+              <div class="macro-label">Complex Carbohydrates</div>
+              <div class="macro-progress-track">
+                <div class="macro-progress-fill fill-carb" id="barCarbs" style="width: 58%;"></div>
+              </div>
+              <span class="macro-subtext" id="subCarbs">Low-GI whole grains, sweet potatoes &amp; vegetables</span>
+            </div>
+
+            <!-- Metric 4: Healthy Fats -->
+            <div class="macro-metric-card" id="cardFats">
+              <div class="macro-metric-top">
+                <span class="macro-icon-bubble bubble-fat"><i class="fa-solid fa-droplet"></i></span>
+                <span class="macro-tag tag-fat" id="tagFats">30% of energy</span>
+              </div>
+              <div class="macro-value-group">
+                <span class="macro-num" id="valFats">72</span>
+                <span class="macro-unit">g / day</span>
+              </div>
+              <div class="macro-label">Healthy Fats &amp; Oils</div>
+              <div class="macro-progress-track">
+                <div class="macro-progress-fill fill-fat" id="barFats" style="width: 48%;"></div>
+              </div>
+              <span class="macro-subtext" id="subFats">Cold-pressed olive oil, avocado &amp; raw nuts</span>
+            </div>
+          </div>
+
+          <!-- Chef Insight Box -->
+          <div class="macro-footer-insight">
+            <div class="macro-insight-icon">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </div>
+            <div class="macro-insight-content">
+              <h4 id="macroInsightHeading">Executive Chef's Meal Plan Tip: Balanced Gourmet Focus</h4>
+              <p id="macroInsightText">Evenly distribute whole grains between breakfast and lunch to maintain steady daytime focus. Finish your dinner with lean proteins and fibrous roasted greens for effortless digestion.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       Recipe Details Modal Dialog
+       ========================================================================= -->
+  <div class="modal-backdrop" id="recipeModal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-container">
+      
+      <!-- Close Button -->
+      <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close recipe details">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Recipe Image Media -->
+      <div class="modal-media">
+        <img id="modalImage" src="" alt="Recipe image">
+      </div>
+
+      <div class="modal-body">
+        
+        <!-- Category & Title -->
+        <span class="modal-category-badge" id="modalCategory">Category</span>
+        <h2 class="modal-title" id="modalTitle">Recipe Title</h2>
+        <p class="modal-description" id="modalDescription">Detailed recipe description...</p>
+
+        <!-- Quick Stats Grid -->
+        <div class="modal-stats-grid">
+          <div class="modal-stat-box">
+            <span>Prep Time</span>
+            <strong id="modalPrepTime">15 mins</strong>
+          </div>
+          <div class="modal-stat-box">
+            <span>Cook Time</span>
+            <strong id="modalCookTime">30 mins</strong>
+          </div>
+          <div class="modal-stat-box">
+            <span>Servings</span>
+            <strong id="modalServings">4 portions</strong>
+          </div>
+          <div class="modal-stat-box">
+            <span>Difficulty</span>
+            <strong id="modalDifficulty">Medium</strong>
+          </div>
+        </div>
+
+        <!-- Two Columns: Ingredients & Instructions -->
+        <div class="modal-recipe-columns">
+          
+          <!-- Ingredients List -->
+          <div>
+            <h3 class="recipe-section-title">
+              <i class="fa-solid fa-basket-shopping"></i> Ingredients
+            </h3>
+            <ul class="ingredients-list" id="modalIngredientsList">
+              <!-- Rendered via Array map() -->
+            </ul>
+          </div>
+
+          <!-- Step-by-Step Instructions -->
+          <div>
+            <h3 class="recipe-section-title">
+              <i class="fa-solid fa-kitchen-set"></i> Cooking Instructions
+            </h3>
+            <ol class="instructions-list" id="modalInstructionsList">
+              <!-- Rendered via Array map() -->
+            </ol>
+          </div>
+
+        </div>
+
+        <!-- Modal Actions Footer -->
+        <div class="modal-footer">
+          <div>
+            <button class="btn btn-outline" id="modalFavBtn">
+              <i class="fa-regular fa-heart" id="modalFavIcon"></i>
+              <span id="modalFavText">Favorite</span>
+            </button>
+          </div>
+
+          <div style="display: flex; gap: 0.75rem;">
+            <button class="btn btn-outline" id="modalFooterCloseBtn">
+              Close
+            </button>
+            <button class="btn btn-primary" id="modalMealPlanBtn">
+              <i class="fa-solid fa-plus"></i> Add to Meal Plan
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Favorites Drawer (Offcanvas) -->
+  <div class="favorites-drawer-backdrop" id="favoritesDrawerBackdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="favorites-drawer">
+      <div class="favorites-drawer-header">
+        <div class="favorites-drawer-title">
+          <i class="fa-solid fa-heart"></i>
+          <span>Saved Favorites</span>
+          <span class="favorites-drawer-count" id="favoritesDrawerCount">0</span>
+        </div>
+        <button class="favorites-drawer-close" id="favoritesDrawerClose" aria-label="Close favorites">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="favorites-drawer-body" id="favoritesDrawerList">
+        <!-- Rendered dynamically via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- =========================================================================
+       Site Footer
+       ========================================================================= -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        
+        <!-- Brand Info -->
+        <div>
+          <div class="footer-brand">
+            <a href="index.html" aria-label="Stackly Home">
+              <img src="assets/images/chan.webp" alt="Stackly Logo" class="footer-logo-img">
+            </a>
+          </div>
+          <p class="footer-desc">
+            Stackly is a modern culinary discovery platform and meal planning assistant designed to empower home cooks with tested recipes, clear instructions, and organized meal preparation.
+          </p>
+          <div class="footer-social-links" aria-label="Social Media Links">
+            <a href="404.html" class="footer-social-link whatsapp" title="WhatsApp" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="404.html" class="footer-social-link facebook" title="Facebook" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="404.html" class="footer-social-link instagram" title="Instagram" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="404.html" class="footer-social-link pinterest" title="Pinterest" aria-label="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+            <a href="404.html" class="footer-social-link twitter" title="Twitter" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+          </div>
+        </div>
+
+        <!-- Quick Navigation -->
+        <div>
+          <h4 class="footer-heading">Navigation</h4>
+          <ul class="footer-links-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="explore.html">Explore Recipes</a></li>
+            <li><a href="meal-plan.html">My Meal Plan</a></li>
+          </ul>
+        </div>
+
+        <!-- Categories -->
+        <div>
+          <h4 class="footer-heading">Categories</h4>
+          <ul class="footer-links-list">
+            <li><a href="404.html">Breakfast Specials</a></li>
+            <li><a href="404.html">Wholesome Lunch</a></li>
+            <li><a href="404.html">Gourmet Dinner</a></li>
+            <li><a href="404.html">Sweet Desserts</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact & Location -->
+        <div>
+          <h4 class="footer-heading">Contact & Location</h4>
+          <div class="footer-contact-list">
+            <div class="footer-contact-item">
+              <i class="fa-solid fa-location-dot"></i>
+              <span>MMR Complex, Chinna Thirupathi, near Chinna Muniyappan Kovil, Salem, Tamil Nadu 636008</span>
+            </div>
+            <div class="footer-contact-item">
+              <i class="fa-solid fa-envelope"></i>
+              <a href="404.html">info@stackly.com</a>
+            </div>
+            <div class="footer-contact-item">
+              <i class="fa-solid fa-phone"></i>
+              <a href="404.html">+91 9876543210</a>
+            </div>
+            <div class="footer-contact-item" style="margin-top: 0.35rem;">
+              <i class="fa-solid fa-map-location-dot"></i>
+              <a 
+                href="https://www.google.com/maps/place/Stackly/@11.6829566,78.1739798,17z/data=!3m1!4b1!4m6!3m5!1s0x3babefef7fd970bb:0xe11aef1a71994f9!8m2!3d11.6829566!4d78.1739798!16s%2Fg%2F11l660s35r?entry=ttu&g_ep=EgoyMDI2MDcwNy4wIKXMDSoASAFQAw%3D%3D" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                style="color: var(--accent); font-weight: 600;"
+              >
+                View on Google Maps →
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Stackly Recipe Discovery. Handcrafted with vanilla web technologies. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

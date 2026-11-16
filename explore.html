@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Recipes | Stackly Discovery</title>
+  <meta name="description" content="Browse and search through 14+ handcrafted recipes. Filter by breakfast, lunch, dinner, desserts, and sort by cooking time.">
+
+  <!-- Google Fonts: Playfair Display (Serif) & Plus Jakarta Sans (Sans-serif) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/webp" href="assets/images/chan.webp">
+</head>
+<body data-page="explore">
+
+  <!-- =========================================================================
+       Preloader Animation
+       ========================================================================= -->
+  <div id="preloader" aria-live="polite" aria-label="Loading Stackly">
+    <div class="preloader-content">
+      <div class="preloader-logo-wrap">
+        <img src="assets/images/chan.webp" alt="Stackly Logo" class="preloader-logo-img">
+      </div>
+      <div class="preloader-bar-wrap">
+        <div class="preloader-bar"></div>
+      </div>
+      <div class="preloader-tagline">Artisan Recipes • Wholesome Planning • Everyday Joy</div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       1. Header & Navigation Bar
+       ========================================================================= -->
+  <header class="site-header" id="siteHeader">
+    <div class="container nav-container">
+      
+      <!-- Brand Logo -->
+      <a href="index.html" class="brand-logo" aria-label="Stackly Home">
+        <img src="assets/images/chan.webp" alt="Stackly Logo" class="brand-logo-img">
+      </a>
+
+      <!-- Primary Navigation Links -->
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-links" id="navLinks">
+          <li>
+            <a href="index.html" class="nav-link">
+              <i class="fa-solid fa-house"></i>
+              <span>Home</span>
+            </a>
+          </li>
+          <li>
+            <a href="explore.html" class="nav-link active">
+              <i class="fa-solid fa-utensils"></i>
+              <span>Explore Recipes</span>
+            </a>
+          </li>
+          <li>
+            <a href="meal-plan.html" class="nav-link">
+              <i class="fa-solid fa-calendar-days"></i>
+              <span>My Meal Plan</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Nav Action Items: Favorites & Meal Plan Badges -->
+      <div class="nav-actions">
+        <!-- Favorites Shortcut Button with Badge -->
+        <button class="nav-action-btn" id="wishlistTriggerBtn" title="Saved Favorites" aria-label="View Favorites">
+          <i class="fa-solid fa-heart" style="color: var(--coral);"></i>
+          <span class="nav-count-badge" id="wishlistCountBadge" style="display:none;">0</span>
+        </button>
+
+        <!-- Mobile Hamburger Menu Button -->
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       PAGE 2: EXPLORE RECIPES CONTENT
+       ========================================================================= -->
+  <main>
+    <div class="container">
+      
+      <!-- Page Section Header -->
+      <div class="section-header" style="margin-top: 2.25rem;">
+        <div>
+          <h1 class="section-title">Explore <span>Recipes</span></h1>
+          <p class="section-subtitle">Find culinary inspiration with instant search, category filtering, and cooking time sorting.</p>
+        </div>
+        <a href="index.html" class="btn btn-outline btn-sm">
+          <i class="fa-solid fa-house"></i> Back to Home
+        </a>
+      </div>
+
+      <!-- Explore Controls: Search, Category Pills, Sort, Favorites Filter -->
+      <div class="explore-controls-panel">
+        
+        <!-- Search Input -->
+        <div class="search-box-row">
+          <div class="search-field-wrapper">
+            <i class="fa-solid fa-magnifying-glass search-field-icon"></i>
+            <input 
+              type="text" 
+              id="searchInput" 
+              class="search-input" 
+              placeholder="Search by recipe name, ingredient (e.g. salmon, garlic, pasta), or keyword..."
+              autocomplete="off"
+            >
+            <button class="search-clear-btn" id="searchClearBtn" title="Clear search">
+              <i class="fa-solid fa-circle-xmark"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Category Pills & Sort/Options Bar -->
+        <div class="filters-row">
+          <!-- Category Pills -->
+          <div class="category-filter-pills" id="categoryPills">
+            <button class="filter-pill active" data-category="All">All Recipes</button>
+            <button class="filter-pill" data-category="Breakfast">Breakfast</button>
+            <button class="filter-pill" data-category="Lunch">Lunch</button>
+            <button class="filter-pill" data-category="Dinner">Dinner</button>
+            <button class="filter-pill" data-category="Desserts">Desserts</button>
+          </div>
+
+          <!-- Sort Dropdown & Favorites Filter -->
+          <div class="sort-options-group">
+            <div class="sort-dropdown-wrap">
+              <label for="sortSelect">Sort:</label>
+              <select id="sortSelect" class="custom-select">
+                <option value="default">Featured & Popular</option>
+                <option value="time-asc">Cooking Time (Fastest)</option>
+                <option value="time-desc">Cooking Time (Longest)</option>
+                <option value="rating-desc">Highest Rated</option>
+                <option value="name-asc">Alphabetical (A - Z)</option>
+              </select>
+            </div>
+
+            <button class="favorites-filter-toggle" id="favFilterToggle">
+              <i class="fa-solid fa-heart" style="color: var(--coral);"></i>
+              <span>Favorites Only</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Results Info Bar -->
+      <div class="results-info-bar">
+        <div>
+          Showing <strong id="resultsCount">0</strong> delicious recipes
+          <span id="activeFilterIndicator"></span>
+        </div>
+        <button class="btn btn-sm btn-outline" id="resetFiltersBtn" style="display: none;">
+          <i class="fa-solid fa-rotate-left"></i> Reset Filters
+        </button>
+      </div>
+
+      <!-- Dynamic Recipe Grid (At least 10 recipes rendered dynamically) -->
+      <div class="recipes-grid" id="exploreRecipesGrid">
+        <!-- Populated dynamically via Array map() in app.js -->
+      </div>
+
+      <!-- Empty State Container -->
+      <div class="empty-state" id="exploreEmptyState" style="display: none;">
+        <div class="empty-state-icon">
+          <i class="fa-solid fa-bowl-rice"></i>
+        </div>
+        <h3>No Recipes Found</h3>
+        <p>We couldn't find any recipes matching your current filter criteria. Try searching for another ingredient or reset all filters.</p>
+        <button class="btn btn-primary" id="emptyResetBtn">
+          <i class="fa-solid fa-rotate-left"></i> Reset All Filters
+        </button>
+      </div>
+
+      <!-- Section 1: Chef's Culinary Techniques & Mastery Tips -->
+      <section class="culinary-tips-section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Chef's Culinary <span>Mastery Tips</span></h2>
+            <p class="section-subtitle">Professional kitchen techniques to elevate your home cooking and bring out deep flavors.</p>
+          </div>
+        </div>
+
+        <div class="tips-grid">
+          <div class="tip-card">
+            <span class="tip-badge"><i class="fa-solid fa-scale-balanced"></i> Preparation</span>
+            <h3>Mise En Place Precision</h3>
+            <p>Always measure, dice, and organize your ingredients in ramekins before turning on heat. Having everything at arm's reach prevents overcooking, scorched spices, and frantic rushing.</p>
+          </div>
+
+          <div class="tip-card">
+            <span class="tip-badge"><i class="fa-solid fa-fire-burner"></i> Heat Control</span>
+            <h3>Mastering Pan Seared Crusts</h3>
+            <p>Always pat proteins thoroughly dry with paper towels and allow your pan to become smoking hot before adding cooking fats. Dry surfaces promote the golden, flavor-packed Maillard crust.</p>
+          </div>
+
+          <div class="tip-card">
+            <span class="tip-badge"><i class="fa-solid fa-lemon"></i> Balancing Flavors</span>
+            <h3>The Power of Bright Acid</h3>
+            <p>If a soup, sauce, or skillet dish tastes slightly flat even after salting, add a splash of citrus juice, aged wine vinegar, or fresh minced herbs. Acid cuts through richness and awakens aromas.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2: Culinary Frequently Asked Questions (FAQ) -->
+      <section class="faq-section">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Frequently Asked <span>Questions</span></h2>
+            <p class="section-subtitle">Quick answers about cook times, recipe substitutions, and culinary organization with Stackly.</p>
+          </div>
+        </div>
+
+        <div class="faq-list" id="faqAccordion">
+          <div class="faq-item active">
+            <button class="faq-question" type="button">
+              <span>How are the recipe cooking times and prep durations estimated?</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+              <p>Every recipe is tested in our kitchen under standard home cooking conditions. Prep times cover washing, peeling, and cutting, while cook times reflect actual active stovetop, pan-searing, or oven baking periods.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>Can I substitute ingredients for gluten-free or dairy-free diets?</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+              <p>Yes! Most recipes include adaptable staples. Dairy milk and cream can be swapped 1:1 with oat milk or coconut cream, and traditional pastas can easily be substituted with chickpea or brown rice alternatives.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>How does Stackly save my favorite recipes and planned meals?</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+              <p>Stackly utilizes your browser's persistent LocalStorage system. Your saved favorites drawer and meal planner stay securely stored on your device without needing account creation or sign-ins.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>What is the best way to scale serving sizes for family dinners?</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+              <p>When doubling a recipe, double the ingredients proportionally, but add spices and aromatics incrementally (start at 1.5x) to prevent overpowering. Stovetop simmering times remain nearly identical.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- =========================================================================
+       Recipe Details Modal Dialog
+       ========================================================================= -->
+  <div class="modal-backdrop" id="recipeModal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-container">
+      
+      <!-- Close Button -->
+      <button class="modal-close-btn" id="modalCloseBtn" aria-label="Close recipe details">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- Recipe Image Media -->
+      <div class="modal-media">
+        <img id="modalImage" src="" alt="Recipe image">
+      </div>
+
+      <div class="modal-body">
+        
+        <!-- Category & Title -->
+        <span class="modal-category-badge" id="modalCategory">Category</span>
+        <h2 class="modal-title" id="modalTitle">Recipe Title</h2>
+        <p class="modal-description" id="modalDescription">Detailed recipe description...</p>
+
+        <!-- Quick Stats Grid -->
+        <div class="modal-stats-grid">
+          <div class="modal-stat-box">
+            <span>Prep Time</span>
+            <strong id="modalPrepTime">15 mins</strong>
+          </div>
+          <div class="modal-stat-box">
+            <span>Cook Time</span>
+            <strong id="modalCookTime">30 mins</strong>
+          </div>
+          <div class="modal-stat-box">
+            <span>Servings</span>
+            <strong id="modalServings">4 portions</strong>
+          </div>
+          <div class="modal-stat-box">
+            <span>Difficulty</span>
+            <strong id="modalDifficulty">Medium</strong>
+          </div>
+        </div>
+
+        <!-- Two Columns: Ingredients & Instructions -->
+        <div class="modal-recipe-columns">
+          
+          <!-- Ingredients List -->
+          <div>
+            <h3 class="recipe-section-title">
+              <i class="fa-solid fa-basket-shopping"></i> Ingredients
+            </h3>
+            <ul class="ingredients-list" id="modalIngredientsList">
+              <!-- Rendered via Array map() -->
+            </ul>
+          </div>
+
+          <!-- Step-by-Step Instructions -->
+          <div>
+            <h3 class="recipe-section-title">
+              <i class="fa-solid fa-kitchen-set"></i> Cooking Instructions
+            </h3>
+            <ol class="instructions-list" id="modalInstructionsList">
+              <!-- Rendered via Array map() -->
+            </ol>
+          </div>
+
+        </div>
+
+        <!-- Modal Actions Footer -->
+        <div class="modal-footer">
+          <div>
+            <button class="btn btn-outline" id="modalFavBtn">
+              <i class="fa-regular fa-heart" id="modalFavIcon"></i>
+              <span id="modalFavText">Favorite</span>
+            </button>
+          </div>
+
+          <div style="display: flex; gap: 0.75rem;">
+            <button class="btn btn-outline" id="modalFooterCloseBtn">
+              Close
+            </button>
+            <button class="btn btn-primary" id="modalMealPlanBtn">
+              <i class="fa-solid fa-plus"></i> Add to Meal Plan
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Favorites Drawer (Offcanvas) -->
+  <div class="favorites-drawer-backdrop" id="favoritesDrawerBackdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="favorites-drawer">
+      <div class="favorites-drawer-header">
+        <div class="favorites-drawer-title">
+          <i class="fa-solid fa-heart"></i>
+          <span>Saved Favorites</span>
+          <span class="favorites-drawer-count" id="favoritesDrawerCount">0</span>
+        </div>
+        <button class="favorites-drawer-close" id="favoritesDrawerClose" aria-label="Close favorites">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="favorites-drawer-body" id="favoritesDrawerList">
+        <!-- Rendered dynamically via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- =========================================================================
+       Site Footer
+       ========================================================================= -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        
+        <!-- Brand Info -->
+        <div>
+          <div class="footer-brand">
+            <a href="index.html" aria-label="Stackly Home">
+              <img src="assets/images/chan.webp" alt="Stackly Logo" class="footer-logo-img">
+            </a>
+          </div>
+          <p class="footer-desc">
+            Stackly is a modern culinary discovery platform and meal planning assistant designed to empower home cooks with tested recipes, clear instructions, and organized meal preparation.
+          </p>
+          <div class="footer-social-links" aria-label="Social Media Links">
+            <a href="404.html" class="footer-social-link whatsapp" title="WhatsApp" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="404.html" class="footer-social-link facebook" title="Facebook" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="404.html" class="footer-social-link instagram" title="Instagram" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="404.html" class="footer-social-link pinterest" title="Pinterest" aria-label="Pinterest"><i class="fa-brands fa-pinterest-p"></i></a>
+            <a href="404.html" class="footer-social-link twitter" title="Twitter" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+          </div>
+        </div>
+
+        <!-- Quick Navigation -->
+        <div>
+          <h4 class="footer-heading">Navigation</h4>
+          <ul class="footer-links-list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="explore.html">Explore Recipes</a></li>
+            <li><a href="meal-plan.html">My Meal Plan</a></li>
+          </ul>
+        </div>
+
+        <!-- Categories -->
+        <div>
+          <h4 class="footer-heading">Categories</h4>
+          <ul class="footer-links-list">
+            <li><a href="404.html">Breakfast Specials</a></li>
+            <li><a href="404.html">Wholesome Lunch</a></li>
+            <li><a href="404.html">Gourmet Dinner</a></li>
+            <li><a href="404.html">Sweet Desserts</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact & Location -->
+        <div>
+          <h4 class="footer-heading">Contact & Location</h4>
+          <div class="footer-contact-list">
+            <div class="footer-contact-item">
+              <i class="fa-solid fa-location-dot"></i>
+              <span>MMR Complex, Chinna Thirupathi, near Chinna Muniyappan Kovil, Salem, Tamil Nadu 636008</span>
+            </div>
+            <div class="footer-contact-item">
+              <i class="fa-solid fa-envelope"></i>
+              <a href="404.html">info@stackly.com</a>
+            </div>
+            <div class="footer-contact-item">
+              <i class="fa-solid fa-phone"></i>
+              <a href="404.html">+91 9876543210</a>
+            </div>
+            <div class="footer-contact-item" style="margin-top: 0.35rem;">
+              <i class="fa-solid fa-map-location-dot"></i>
+              <a 
+                href="https://www.google.com/maps/place/Stackly/@11.6829566,78.1739798,17z/data=!3m1!4b1!4m6!3m5!1s0x3babefef7fd970bb:0xe11aef1a71994f9!8m2!3d11.6829566!4d78.1739798!16s%2Fg%2F11l660s35r?entry=ttu&g_ep=EgoyMDI2MDcwNy4wIKXMDSoASAFQAw%3D%3D" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                style="color: var(--accent); font-weight: 600;"
+              >
+                View on Google Maps →
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Stackly Recipe Discovery. Handcrafted with vanilla web technologies. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Application Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

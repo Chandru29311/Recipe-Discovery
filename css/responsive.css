@@ -1,0 +1,455 @@
+/* ==========================================================================
+   Recipe Discovery & Meal Planner - Responsive Stylesheet
+   Pure CSS3 Mobile-First Breakpoints
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Desktop & Tablet Landscape (max-width: 1024px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .hero-card {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-media-wrapper {
+    min-height: 320px;
+    order: -1;
+  }
+
+  .hero-media-wrapper::before {
+    background: linear-gradient(180deg, transparent 40%, #090d16 100%);
+  }
+
+  .hero-content {
+    padding: 3rem 2.5rem;
+  }
+
+  .modal-recipe-columns {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .macro-metrics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Tablets & Phablets (max-width: 768px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+
+  html.menu-open,
+  body.menu-open {
+    overflow: hidden !important;
+    height: 100% !important;
+    touch-action: none !important;
+    -webkit-overflow-scrolling: auto !important;
+  }
+
+  body.menu-open .site-header {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom-color: transparent;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  /* When hamburger menu is open: hide logo and favorites button */
+  body.menu-open .brand-logo {
+    display: none !important;
+  }
+
+  body.menu-open .nav-actions .nav-action-btn,
+  body.menu-open #wishlistTriggerBtn {
+    display: none !important;
+  }
+
+  body.menu-open .nav-container {
+    justify-content: flex-end;
+  }
+
+  .nav-container {
+    height: 70px;
+  }
+
+  .brand-logo {
+    position: relative;
+    z-index: 1102;
+  }
+
+  .nav-actions {
+    position: relative;
+    z-index: 1102;
+  }
+
+  .hamburger-btn {
+    display: flex;
+    position: relative;
+    z-index: 1105;
+  }
+
+  /* Fullscreen Whole Page Mobile Menu */
+  .nav-links {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    width: 100dvw;
+    height: 100vh;
+    height: 100dvh;
+    background: #ffffff;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    gap: 2.25rem;
+    border: none;
+    box-shadow: none;
+    display: flex;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    z-index: 1050;
+    transform: scale(0.96);
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
+  }
+
+  .nav-links.open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: scale(1);
+  }
+
+  .nav-links li {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    list-style: none;
+  }
+
+  .nav-link {
+    width: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem 2.25rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #475569;
+    border-radius: var(--radius-pill);
+    gap: 0.75rem;
+    transition: all 0.25s ease;
+  }
+
+  .nav-link i {
+    font-size: 1.2rem;
+  }
+
+  .nav-link.active {
+    background-color: var(--accent);
+    color: #ffffff;
+    box-shadow: 0 6px 18px rgba(234, 88, 12, 0.35);
+  }
+
+  .nav-link.active i {
+    color: #ffffff;
+  }
+
+  .nav-link:not(.active):hover {
+    color: var(--accent);
+    background-color: var(--accent-light);
+  }
+
+  .hero-title {
+    font-size: 2.15rem;
+  }
+
+  .hero-content {
+    padding: 2.25rem 1.5rem;
+  }
+
+  .filters-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sort-options-group {
+    justify-content: space-between;
+  }
+
+  .recipes-grid {
+    grid-template-columns: 1fr;
+  }
+
+  body[data-page="explore"] main {
+    padding-bottom: 3.5rem;
+  }
+
+  .modal-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+
+  .modal-media {
+    height: 240px;
+  }
+
+  .modal-title {
+    font-size: 1.65rem;
+  }
+
+  /* Meal Plan Page Responsive (<= 768px) */
+  body[data-page="meal-plan"] main {
+    padding-bottom: 3.5rem;
+  }
+
+  .meal-plan-stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.85rem;
+  }
+
+  .meal-plan-actions-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.85rem;
+    padding: 1rem;
+    background: var(--bg-card);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+  }
+
+  .meal-plan-notice {
+    font-size: 0.82rem;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .meal-plan-btns-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+    width: 100%;
+  }
+
+  .meal-plan-btns-group .btn {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.82rem;
+    padding: 0.65rem 0.5rem;
+    white-space: nowrap;
+  }
+
+  .meal-plan-item {
+    grid-template-columns: 1fr;
+    overflow: hidden;
+  }
+
+  .meal-plan-item-img {
+    height: 200px;
+    width: 100%;
+  }
+
+  .meal-plan-item-content {
+    padding: 1.15rem 1.15rem 0.75rem;
+  }
+
+  .meal-plan-item-title {
+    font-size: 1.15rem;
+    line-height: 1.35;
+  }
+
+  .meal-plan-item-meta {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.55rem 0.75rem;
+    font-size: 0.82rem;
+  }
+
+  .meal-plan-item-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .meal-plan-item-actions {
+    padding: 0 1.15rem 1.15rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+    width: 100%;
+  }
+
+  .meal-plan-item-actions .btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.65rem 0.5rem;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Responsive Grid Adjustments for New Sections */
+  .features-grid,
+  .testimonials-grid,
+  .tips-grid,
+  .batch-prep-grid {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+  }
+
+  .macro-dashboard-card {
+    padding: 1.35rem;
+  }
+
+  .macro-presets-bar {
+    gap: 0.5rem;
+  }
+
+  .macro-footer-insight {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.15rem;
+    gap: 0.75rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Small Phones (max-width: 480px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 480px) {
+  .favorites-drawer {
+    max-width: 100%;
+  }
+
+  .hero-title {
+    font-size: 1.75rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+  }
+
+  .recipe-card-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .modal-footer > div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .modal-footer .btn {
+    width: 100%;
+  }
+
+  .stat-card {
+    padding: 1.15rem;
+  }
+
+  .toast {
+    max-width: 90vw;
+  }
+
+  .contact-info-col {
+    padding: 2rem 1.25rem;
+  }
+
+  .contact-title {
+    font-size: 1.6rem;
+  }
+
+  .brand-logo-img {
+    height: 34px;
+    max-width: 130px;
+  }
+
+  .meal-plan-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .meal-plan-btns-group {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .meal-plan-item-img {
+    height: 175px;
+  }
+
+  .meal-plan-item-content {
+    padding: 0.95rem 0.95rem 0.65rem;
+  }
+
+  .meal-plan-item-actions {
+    padding: 0 0.95rem 0.95rem;
+    gap: 0.5rem;
+  }
+
+  .meal-plan-item-actions .btn {
+    font-size: 0.82rem;
+    padding: 0.55rem 0.45rem;
+  }
+
+  .macro-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .macro-pill {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Extra Small Phones (max-width: 360px) */
+@media (max-width: 360px) {
+  .meal-plan-item-meta {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+
+  .meal-plan-item-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tablet & Mobile Contact Wrap */
+@media (max-width: 992px) {
+  .contact-card-wrap {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-map-col {
+    min-height: 320px;
+    height: 320px;
+  }
+}
+
